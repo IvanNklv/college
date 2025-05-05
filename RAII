@@ -1,0 +1,23 @@
+#include <iostream>
+
+class Hello {
+public:
+    Hello() {
+        std::cout << "Об'єкт створено\n";
+    }
+
+    ~Hello() {
+        std::cout << "Об'єкт знищено (RAII)\n";
+    }
+
+    void say() {
+        std::cout << "Привіт!\n";
+    }
+};
+
+int main() {
+    Hello h;
+    h.say();
+    std::cout << "Кінець функції\n";
+    return 0;
+}
