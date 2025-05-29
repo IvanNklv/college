@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Функція для додавання ребра в неорієнтований граф
+void addEdge(vector<vector<int>> &adj, int s, int t)
+{
+    adj[s].push_back(t);
+    adj[t].push_back(s);
+}
+
+// Рекурсивна функція для обходу графа в глибину (DFS)
+void dfsRec(vector<vector<int>> &adj, vector<bool> &visited, int s, vector<int> &res)
+{
+    // Позначаємо поточну вершину як відвідану
+    visited[s] = true;
+
+    res.push_back(s);
+
+    // Рекурсивно відвідуємо всі суміжні вершини, які ще не були відвідані
+    for (int i : adj[s])
+        if (visited[i] == false)
+            dfsRec(adj, visited, i, res);
+}
+
+// Основна функція DFS для виконання обходу по всьому графу
+vector<int> DFS(vector<vector<int>> &adj)
+{
+    vector<bool> visited(adj.size(), false);
+    vector<int> res;
+
+    // Проходимо по всіх вершинах, щоб врахувати не зв’язаний граф
+    for (int i = 0; i < adj.size(); i++)
+    {
+        if (visited[i] == false)
+        {
+            // Якщо вершина i ще не була відвідана —
+            // виконуємо DFS від неї
+            dfsRec(adj, visited, i, res);
+        }
+    }
+
+    return res;
+}
+
+int main()
+{
+    int V = 6;
+    // Створюємо список суміжності для графа
+    vector<vector<int>> adj(V);
+
+    // Визначаємо ребра графа
+    vector<vector<int>> edges = {{1, 2}, {2, 0}, {0, 3}, {4, 5}};
+
+    // Заповнюємо список суміжності ребрами
+    for (auto &e : edges)
+        addEdge(adj, e[0], e[1]);
+
+    // Виконуємо обхід у глибину (DFS)
+    vector<int> res = DFS(adj);
+
+    // Виводимо результат
+    for (auto it : res)
+        cout << it << " ";
+    
+    return 0;
+}
