@@ -1,0 +1,80 @@
+#pragma once
+
+#include <string.h>
+#include <iostream>
+
+class Ork {
+private:
+    int hp;
+    char name[20];
+
+public:
+    Ork(const char* name = "NoName", int hp = 100) {
+        if (name != nullptr && strlen(name) < 20) {
+            strcpy_s(this->name, 20, name);
+        }
+        if (hp > 0) {
+            this->hp = hp;
+        }
+    }
+
+    int GetHP() const { return hp; }
+    const char* GetName() const { return name; }
+
+    void ReduceHP(int points) {
+        if (points > 0) {
+            hp -= points;
+        }
+    }
+
+    friend class Shaman;
+};
+
+class Shaman {
+private:
+    int hp;
+    char name[20];
+
+public:
+    Shaman(const char* name = "NoName", int hp = 100) {
+        if (name != nullptr && strlen(name) < 20) {
+            strcpy_s(this->name, 20, name);
+        }
+        if (hp > 0) {
+            this->hp = hp;
+        }
+    }
+
+    int GetHP() const { return hp; }
+    const char* GetName() const { return name; }
+
+    void Heal(Ork& ork) {
+        if (ork.hp < 100) {
+            ork.hp = 100;
+        }
+    }
+
+    void ReduceHP(int points) {
+        if (points > 0) {
+            hp -= points;
+        }
+    }
+
+};
+
+int main() {
+    Shaman shaman("Ivan", 120);
+    Ork ork("Andrew", 80);
+
+    std::cout << "HP Shaman: " << shaman.GetHP() << ", Ork: " << ork.GetHP() << std::endl;
+
+    shaman.Heal(ork);
+    std::cout << "After Heal Ork HP: " << ork.GetHP() << std::endl;
+
+    ork.ReduceHP(60);
+    std::cout << "After Reduce Ork HP: " << ork.GetHP() << std::endl;
+
+    shaman.ReduceHP(40);
+    std::cout << "After Reduce Shaman HP: " << shaman.GetHP() << std::endl;
+    return 0;
+}
